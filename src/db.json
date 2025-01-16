@@ -1,0 +1,62 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "Project Management",
+      "tasks": [
+        {
+          "title": "adsa",
+          "category": "Personal",
+          "priority": "Medium",
+          "startDate": "",
+          "endDate": ""
+        },
+        {
+          "title": "csasascasc",
+          "category": "Personal",
+          "priority": "Medium",
+          "startDate": "",
+          "endDate": ""
+        }
+      ]
+    },
+    {
+      "id": "ad54",
+      "title": "Renovation",
+      "tasks": []
+    },
+    {
+      "id": "f571",
+      "title": "Renovation",
+      "tasks": []
+    },
+    {
+      "id": "d621",
+      "title": "Summer Vacation",
+      "tasks": []
+    },
+    {
+      "id": "b313",
+      "title": "Wedding Plans",
+      "tasks": []
+    }
+  ],
+  "tasks": [
+    {
+      "id": "5893",
+      "title": "nghmv",
+      "category": "Personal",
+      "priority": "Medium",
+      "startDate": "",
+      "endDate": ""
+    },
+    {
+      "id": "9649",
+      "title": "ghcvhmv",
+      "category": "Personal",
+      "priority": "Medium",
+      "startDate": "",
+      "endDate": ""
+    }
+  ]
+}
