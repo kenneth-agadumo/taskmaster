@@ -3,22 +3,7 @@
     {
       "id": "1",
       "title": "Project Management",
-      "tasks": [
-        {
-          "title": "adsa",
-          "category": "Personal",
-          "priority": "Medium",
-          "startDate": "",
-          "endDate": ""
-        },
-        {
-          "title": "csasascasc",
-          "category": "Personal",
-          "priority": "Medium",
-          "startDate": "",
-          "endDate": ""
-        }
-      ]
+      "tasks": []
     },
     {
       "id": "ad54",
@@ -53,6 +38,22 @@
     {
       "id": "9649",
       "title": "ghcvhmv",
+      "category": "Personal",
+      "priority": "Medium",
+      "startDate": "",
+      "endDate": ""
+    },
+    {
+      "id": "dd16",
+      "title": "Eat dinner",
+      "category": "Personal",
+      "priority": "Medium",
+      "startDate": "",
+      "endDate": ""
+    },
+    {
+      "id": "5c10",
+      "title": "h",
       "category": "Personal",
       "priority": "Medium",
       "startDate": "",
