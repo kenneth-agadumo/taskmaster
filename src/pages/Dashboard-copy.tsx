@@ -1,45 +1,19 @@
-// import React, { useState } from 'react';
-// import DashboardSearch from '../components/DashboardSearch';
-// import Projects from './Projects';
-// import Tasks from './Tasks';
-
-// const Dashboard: React.FC = () => {
-//   const [filteredData, setFilteredData] = useState<{ projects: any[], tasks: any[] }>({ projects: [], tasks: [] });
-
-//   const handleSearch = (query: string, filteredData: { projects: any[], tasks: any[] }) => {
-//     setFilteredData(filteredData); // Update state with filtered projects and tasks
-//     console.log(filteredData)
-//   };
-
-//   return (
-//     <div>
-//       <DashboardSearch onSearch={handleSearch} />
-//       <Projects projects={filteredData.projects} /> {/* Display filtered projects */}
-//       <Tasks tasks={filteredData.tasks} /> {/* Display filtered tasks */}
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
-
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import DashboardSearch from "../components/DashboardSearch";
 import { FaFolder, FaTasks } from "react-icons/fa";
-import { FaCalendarDays } from "react-icons/fa6";
 import { BiSolidDashboard } from "react-icons/bi";
+import { MdDarkMode } from "react-icons/md";
+
 
 import Tasks from "./Tasks";
 import Projects from "./Projects";
 import Calendar from "./Calendar";
+import SearchResults from "./SearchResults";
 import { getTasks, getProjects } from "../api";
 import { Task, Project } from "../types";
 
 // Define types for the `selectedTab`
-type TabOption = "projects" | "tasks" | "calendar";
+type TabOption = "projects" | "tasks" | "calendar" | "search";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<TabOption>("tasks");
@@ -71,24 +45,23 @@ const Dashboard: React.FC = () => {
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
 
-    // Filter tasks and projects based on query
+    console.log(searchQuery)
+
     if (!query) {
       setFilteredTasks(tasks);
       setFilteredProjects(projects);
+      setSelectedTab("tasks"); // Reset to tasks tab if no query
     } else {
       const lowercasedQuery = query.toLowerCase();
       setFilteredTasks(
-        tasks.filter((task) =>
-          task.title?.toLowerCase().includes(lowercasedQuery)
-        )
+        tasks.filter((task) => task.title?.toLowerCase().includes(lowercasedQuery))
       );
       setFilteredProjects(
         projects.filter((project) =>
           project.title?.toLowerCase().includes(lowercasedQuery)
         )
       );
-      console.log(filteredTasks)
-      console.log(filteredProjects)
+      setSelectedTab("search"); // Switch to search tab
     }
   };
 
@@ -99,7 +72,8 @@ const Dashboard: React.FC = () => {
   return (
     <div className="bg-slate-100 flex flex-col" style={{ height: "100vh" }}>
       <header className="col-span-12 flex justify-end items-center py-7 pl-5 pr-9 h-2">
-        <DashboardSearch onSearch={handleSearchChange} />
+        < MdDarkMode className="mx-8 size-6 cursor-pointer hover:text-purple-700" />
+        <DashboardSearch onSearch={handleSearchChange}  isSearchTabActive={selectedTab === "search"} />
       </header>
       <div className="flex flex-row overflow-auto gap-2 h-full">
         <div className="bg-white basis-1/4 h-full p-3">
@@ -111,7 +85,12 @@ const Dashboard: React.FC = () => {
                 }`}
                 onClick={() => handleTabChange("calendar")}
               >
-                <div className={`${selectedTab === 'calendar' && 'w-1 h-14 mr-2  rounded relative top-0 left-0 bg-purple-950'}`}></div>
+                <div
+                  className={`${
+                    selectedTab === "calendar" &&
+                    "w-1 h-14 mr-2 rounded relative top-0 left-0 bg-purple-950"
+                  }`}
+                ></div>
 
                 <BiSolidDashboard
                   className={`${
@@ -132,7 +111,12 @@ const Dashboard: React.FC = () => {
                 }`}
                 onClick={() => handleTabChange("projects")}
               >
-                <div className={`${selectedTab === 'projects' && 'w-1 h-14 mr-2  rounded relative top-0 left-0 bg-purple-950'}`}></div>
+                <div
+                  className={`${
+                    selectedTab === "projects" &&
+                    "w-1 h-14 mr-2 rounded relative top-0 left-0 bg-purple-950"
+                  }`}
+                ></div>
                 <FaFolder
                   className={`${
                     selectedTab === "projects" && "text-purple-950"
@@ -152,7 +136,12 @@ const Dashboard: React.FC = () => {
                 }`}
                 onClick={() => handleTabChange("tasks")}
               >
-                <div className={`${selectedTab === 'tasks' && 'w-1 h-14 mr-2  rounded relative top-0 left-0 bg-purple-950'}`}></div>
+                <div
+                  className={`${
+                    selectedTab === "tasks" &&
+                    "w-1 h-14 mr-2 rounded relative top-0 left-0 bg-purple-950"
+                  }`}
+                ></div>
 
                 <FaTasks
                   className={`${
@@ -174,12 +163,11 @@ const Dashboard: React.FC = () => {
           {selectedTab === "projects" && <Projects />}
           {selectedTab === "tasks" && <Tasks  />}
           {selectedTab === "calendar" && <Calendar />}
+          {selectedTab === "search" &&  <SearchResults tasks={filteredTasks} projects={filteredProjects}  />}
         </div>
       </div>
     </div>
   );
 };
-
-
 
 export default Dashboard;

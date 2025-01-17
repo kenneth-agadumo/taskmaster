@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Task } from "../types";
 
 interface TaskFormProps {
-  onSave: (task: Omit<Task, "id"> | Task) => void;
+  onSave: (task: Task | Omit<Task, "id">) => void;
   onCancel: () => void;
   editingTask?: Task | null;
 }
@@ -33,17 +33,18 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onCancel, editingTask }) =>
 
   const handleSave = () => {
     if (!newTaskTitle) return;
-
-    const task: Omit<Task, "id"> | Task = {
-      ...editingTask,
+  
+    const task: Task = {
+      id: editingTask?.id || "new-task-id",  // Use existing id if editing, otherwise generate a new one
       title: newTaskTitle,
       category,
       priority: isUrgent ? "Urgent" : "Medium",
       startDate,
       endDate,
+      status: "Not Started",  // Default status
     };
     onSave(task);
-    onCancel()
+    onCancel();
   };
 
   return (

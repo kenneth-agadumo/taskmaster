@@ -3,7 +3,16 @@
     {
       "id": "1",
       "title": "Project Management",
-      "tasks": []
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
     },
     {
       "id": "ad54",
@@ -28,36 +37,31 @@
   ],
   "tasks": [
     {
-      "id": "5893",
-      "title": "nghmv",
-      "category": "Personal",
-      "priority": "Medium",
-      "startDate": "",
-      "endDate": ""
+      "id": "e790",
+      "title": "new1",
+      "category": "Work",
+      "priority": "Urgent",
+      "startDate": "2025-01-18",
+      "endDate": "2025-01-31",
+      "status": "In Progress"
     },
     {
-      "id": "9649",
-      "title": "ghcvhmv",
+      "id": "85d9",
+      "title": "sa",
       "category": "Personal",
       "priority": "Medium",
-      "startDate": "",
-      "endDate": ""
+      "startDate": "2025-01-19",
+      "endDate": "2025-01-31",
+      "status": "Completed"
     },
     {
-      "id": "dd16",
-      "title": "Eat dinner",
-      "category": "Personal",
-      "priority": "Medium",
-      "startDate": "",
-      "endDate": ""
-    },
-    {
-      "id": "5c10",
-      "title": "h",
-      "category": "Personal",
-      "priority": "Medium",
-      "startDate": "",
-      "endDate": ""
+      "id": "34c7",
+      "title": "this is a new task 1",
+      "category": "Work",
+      "priority": "Urgent",
+      "startDate": "2025-01-11",
+      "endDate": "2025-01-30",
+      "status": "Not Started"
     }
   ]
 }

@@ -1,9 +1,7 @@
 // Import React and necessary hooks
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DashboardSearch from '../components/DashboardSearch';
+// import DashboardSearch from '../components/DashboardSearch';
 import { FaFolder, FaTasks } from "react-icons/fa";
-import { FaCalendarDays } from "react-icons/fa6";
 
 import { BiSolidDashboard } from "react-icons/bi";
 
@@ -16,7 +14,7 @@ import Calendar from './Calendar';
 type TabOption = 'projects' | 'tasks' | 'calendar' ;
 
 const Dashboard: React.FC = () => {
-  const [dropdownActive, setDropdownActive] = useState<boolean>(false);
+
   const [selectedTab, setSelectedTab] = useState<TabOption>('tasks'); // Default tab is 'projects'
 
   // Handle tab change
@@ -33,7 +31,7 @@ const Dashboard: React.FC = () => {
     <div className="bg-slate-100 flex flex-col" style={{ height: '100vh' }}>
       {/* Dashboard Header */}
       <header className="col-span-12 flex justify-end items-center py-7 pl-5 pr-9 h-2">
-        <DashboardSearch onSearch={''} />
+        {/* <DashboardSearch  /> */}
       </header>
 
       <div className="flex flex-row overflow-auto gap-2 h-full">

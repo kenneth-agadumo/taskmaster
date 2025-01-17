@@ -4,9 +4,10 @@ import { getProjects, getTasks } from '../api'; // Import your API functions
 
 interface DashboardSearchProps {
   onSearch: (query: string, filteredData: { projects: any[], tasks: any[] }) => void;
+  isSearchTabActive: boolean;
 }
 
-const DashboardSearch: React.FC<DashboardSearchProps> = ({ onSearch }) => {
+const DashboardSearch: React.FC<DashboardSearchProps> = ({ onSearch, isSearchTabActive }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +21,7 @@ const DashboardSearch: React.FC<DashboardSearchProps> = ({ onSearch }) => {
         const tasks = await getTasks(); // Fetch all tasks
 
         const filteredProjects = projects.filter((project) =>
-          project.name && project.name.toLowerCase().includes(value.toLowerCase())
+          project.title && project.title.toLowerCase().includes(value.toLowerCase())
         );
         const filteredTasks = tasks.filter((task) =>
           task.title && task.title.toLowerCase().includes(value.toLowerCase())
@@ -34,8 +35,8 @@ const DashboardSearch: React.FC<DashboardSearchProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-bar-column hidden bg-white pl-3 rounded w-fit flex items-center gap-2 lg:flex">
-      <FaSearch className='text-gray-400' />
+    <div className="search-bar-column  bg-white pl-3 rounded w-fit flex items-center gap-2 lg:flex">
+      <FaSearch className={`text-gray-400 ${isSearchTabActive && 'text-purple-500'}`} />
       <input
         className="search-input w-72 p-2 focus:outline-none"
         type="text"

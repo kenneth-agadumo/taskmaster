@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Task } from "./types";
+import { Project, Task } from "./types";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -16,7 +16,7 @@ export const getProjects = async (): Promise<Project[]> => {
 };
 
 // Get a single project by ID
-export const getProjectById = async (id: number): Promise<Project> => {
+export const getProjectById = async (id: string): Promise<Project> => {
   const response = await axios.get<Project>(`${PROJECTS_API}/${id}`);
   return response.data;
 };
@@ -34,7 +34,7 @@ export const updateProject = async (updatedProject: Project): Promise<Project> =
 };
 
 // Delete a project by ID
-export const deleteProject = async (id: number): Promise<void> => {
+export const deleteProject = async (id: string): Promise<void> => {
   await axios.delete(`${PROJECTS_API}/${id}`);
 };
 
@@ -48,7 +48,7 @@ export const getProjectTasks = async (): Promise<Task[]> => {
 };
 
 // Add a new task to a project
-export const addTaskToProject = async (projectId: number, newTask: Task): Promise<Project> => {
+export const addTaskToProject = async (projectId: string, newTask: Task): Promise<Project> => {
   const project = await getProjectById(projectId);
   const updatedProject = {
     ...project,
@@ -58,7 +58,7 @@ export const addTaskToProject = async (projectId: number, newTask: Task): Promis
 };
 
 // Remove a task from a project
-export const removeTaskFromProject = async (projectId: number, taskId: number): Promise<Project> => {
+export const removeTaskFromProject = async (projectId: string, taskId: string): Promise<Project> => {
   const project = await getProjectById(projectId);
   const updatedProject = {
     ...project,
@@ -92,18 +92,18 @@ export const updateTask = async (task: Task): Promise<Task> => {
 };
 
 //  Delete a task
-export const deleteTask = async (id: number): Promise<void> => {
+export const deleteTask = async (id: string): Promise<void> => {
   await axios.delete(`${TASKS_API}/${id}`);
 };
 
 
 // Update task within a project
-export const updateTaskInProject = async (projectId: number, updatedTask: Task): Promise<Project> => {
+export const updateTaskInProject = async (projectId: string, updatedTask: Task): Promise<Project> => {
   // Fetch the project by ID
   const project = await getProjectById(projectId);
 
   // Update the task in the project's task list
-  const updatedTasks = project.tasks.map((task) =>
+  const updatedTasks = project.tasks.map((task: Task) =>
     task.id === updatedTask.id ? { ...task, ...updatedTask } : task // Update the task in the project
   );
 
