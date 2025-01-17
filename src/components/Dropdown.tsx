@@ -1,60 +1,53 @@
-import React, { useState } from "react";
-import { HiOutlineDotsVertical } from "react-icons/hi";
-import { RiEdit2Fill } from "react-icons/ri";
-import { MdDelete } from "react-icons/md";
+import React, { useState, useEffect } from "react";
+import { useGlobalContext } from "../contexts/GlobalContext";
 
+interface DropdownComponentProps {
+  selectedStatus: string; // The current status value
+  task: { id: string }; // Task object with at least the ID property
+}
 
+const DropdownComponent: React.FC<DropdownComponentProps> = ({ selectedStatus, task }) => {
+  const [currentStatus, setCurrentStatus] = useState(selectedStatus);
+  const { updateTaskStatus } = useGlobalContext(); // Access the global context function
 
-const Dropdown: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    setCurrentStatus(selectedStatus); // Sync the status when the prop changes
+  }, [selectedStatus]);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  // Function to handle the change of selection
+  const handleChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newStatus = event.target.value;
+    setCurrentStatus(newStatus);
+    await updateTaskStatus(task.id, newStatus); // Update the task's status in the database
+  };
+
+  // Determine the color class based on the selected status
+  const getColorClass = () => {
+    switch (currentStatus) {
+      case "Not Started":
+        return "bg-red-600";
+      case "In Progress":
+        return "bg-amber-400";
+      case "Completed":
+        return "bg-green-600";
+      default:
+        return "bg-gray-600";
+    }
   };
 
   return (
-    <div className="relative inline-block text-left">
-      {/* Icon Button */}
-      <button
-        onClick={toggleDropdown}
-        className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full"
+    <div>
+      <select
+        value={currentStatus}
+        onChange={handleChange}
+        className={`p-1 rounded-xl text-white ${getColorClass()}`}
       >
-        <HiOutlineDotsVertical className="text-gray-700 size-1"  />
-      </button>
-
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-          <ul className="py-2">
-            <li>
-              <button
-                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => alert("Action 1 clicked")}
-              >
-                Action 1
-              </button>
-            </li>
-            <li>
-              <button
-                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => alert("Action 2 clicked")}
-              >
-                Action 2
-              </button>
-            </li>
-            <li>
-              <button
-                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => alert("Action 3 clicked")}
-              >
-                Action 3
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
     </div>
   );
 };
 
-export default Dropdown;
+export default DropdownComponent;

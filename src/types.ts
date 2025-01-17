@@ -1,5 +1,5 @@
 export interface Task {
-    id: number;
+    id: string;
     title: string;
     category: string;
     priority: string; // Use `Date` if parsing is handled.
@@ -10,7 +10,7 @@ export interface Task {
   }
 
   export interface Project {
-    id: number;
+    id: string;
     title: string;
     tasks: Task[]
   }

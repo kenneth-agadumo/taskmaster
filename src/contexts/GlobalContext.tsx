@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
+import React, { createContext, useState,  ReactNode, useContext } from "react";
 import { Task, Project } from "../types"; // Import the types
 import {
   getTasks,
@@ -23,12 +23,13 @@ interface GlobalContextProps {
   fetchAllTasks: () => Promise<void>;
   fetchAllProjects: () => Promise<void>;
   handleSaveTask: (task: Task) => Promise<void>;
-  handleDeleteTask: (id: number) => Promise<void>;
+  handleDeleteTask: (id: string) => Promise<void>;
   handleSaveProject: (project: Project) => Promise<void>;
-  handleDeleteProject: (id: number) => Promise<void>;
-  addTaskToProject: (projectId: number, task: Task) => Promise<void>;
-  removeTaskFromProject: (projectId: number, taskId: number) => Promise<void>;
-  updateTaskInProject: (projectId: number, task: Task) => Promise<void>; // Add the updateTaskInProject function here
+  handleDeleteProject: (id: string) => Promise<void>;
+  addTaskToProject: (projectId: string, task: Task) => Promise<void>;
+  removeTaskFromProject: (projectId: string, taskId: string) => Promise<void>;
+  updateTaskInProject: (projectId: string, task: Task) => Promise<void>; // Add the updateTaskInProject function here
+  updateTaskStatus: (taskId: string, status: string) => Promise<void>; // New function for updating task status
 }
 
 export const GlobalContext = createContext<GlobalContextProps | null>(null);
@@ -84,7 +85,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   // Delete a task
-  const handleDeleteTask = async (id: number) => {
+  const handleDeleteTask = async (id: string) => {
     await deleteTask(id);
     setTasks((prev) => prev.filter((task) => task.id !== id)); // Remove the task from the state
   };
@@ -101,39 +102,49 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   // Delete a project
-  const handleDeleteProject = async (id: number) => {
+  const handleDeleteProject = async (id: string) => {
     await deleteProject(id);
     setProjects((prev) => prev.filter((project) => project.id !== id)); // Remove the project from the state
   };
 
   // Add a task to a project
-  const handleAddTaskToProject = async (projectId: number, task: Task) => {
+  const handleAddTaskToProject = async (projectId: string, task: Task) => {
     const updatedProject = await addTaskToProject(projectId, task);
-    setProjects((prev) => prev.map((p) => (p.id === updatedProject.id ? updatedProject : p)));
+    setProjects((prev) =>
+      prev.map((p) => (p.id === updatedProject.id ? updatedProject : p))
+    );
   };
 
   // Remove a task from a project
-  const handleRemoveTaskFromProject = async (projectId: number, taskId: number) => {
+  const handleRemoveTaskFromProject = async (projectId: string, taskId: string) => {
     const updatedProject = await removeTaskFromProject(projectId, taskId);
-    setProjects((prev) => prev.map((p) => (p.id === updatedProject.id ? updatedProject : p)));
+    setProjects((prev) =>
+      prev.map((p) => (p.id === updatedProject.id ? updatedProject : p))
+    );
   };
 
-  // Update task in project
-  const handleUpdateTaskInProject = async (projectId: number, task: Task) => {
-    const updatedProject = await updateTaskInProject(projectId, task); // Update the task in the project
-    setProjects((prev) => prev.map((p) => (p.id === updatedProject.id ? updatedProject : p))); // Update the project state
-  };
+    // Update task status
+    const updateTaskStatus = async (taskId: string, status: string) => {
+      const taskToUpdate = tasks.find((task) => task.id === taskId);
+      if (taskToUpdate) {
+        taskToUpdate.status = status; // Modify the task's status
+        await handleSaveTask(taskToUpdate); // Use handleSaveTask to update the task
+      }
+    };
 
-  useEffect(() => {
-    fetchAllTasks();
-    fetchAllProjects();
-  }, []);
 
+    const handleUpdateTaskInProject = async (projectId: string, updatedTask: Task) => {
+      const updatedProject = await updateTaskInProject(projectId, updatedTask); // Call the API function
+      setProjects((prev) =>
+        prev.map((p) => (p.id === updatedProject.id ? updatedProject : p)) // Update the state
+      );
+    };
+    
   return (
     <GlobalContext.Provider
       value={{
         tasks,
-        projects,setProjects,
+        projects,
         getTimeUntilEnd,
         fetchAllTasks,
         fetchAllProjects,
@@ -143,7 +154,8 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         handleDeleteProject,
         addTaskToProject: handleAddTaskToProject,
         removeTaskFromProject: handleRemoveTaskFromProject,
-        updateTaskInProject: handleUpdateTaskInProject, // Add handleUpdateTaskInProject to the context
+        updateTaskInProject: handleUpdateTaskInProject,// Ensure it's available
+        updateTaskStatus,
       }}
     >
       {children}
